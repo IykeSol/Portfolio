@@ -514,7 +514,7 @@ const App = () => {
       <section id="contact" className="py-20 px-6 bg-gradient-to-b from-transparent to-blue-900/10">
         <div className="container mx-auto max-w-4xl text-center">
           
-          {/* Contact Card - Reduced padding on mobile */}
+          {/* Contact Card */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
@@ -551,13 +551,13 @@ const App = () => {
             </div>
           </motion.div>
 
-          {/* --- COMPACT & VISIBLE FOOTER --- */}
+          {/*  FOOTER */}
           <footer className="border-t border-white/10 pt-8">
             <div className="flex flex-col-reverse md:flex-row justify-between items-center gap-4">
               
-              {/* Copyright - Now visible */}
+              {/* Copyright */}
               <p className="text-gray-400 text-sm">
-                © {new Date().getFullYear()} IykeSol. All rights reserved.
+                © {new Date().getFullYear()} Kalu Ikechukwu. All rights reserved.
               </p>
 
               {/* Navigation */}
