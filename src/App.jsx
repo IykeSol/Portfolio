@@ -112,6 +112,7 @@ const projects = [
 
 // --- COMPONENTS ---
 
+// OPTIMIZED: Uses Framer Motion native layout animations instead of React State to prevent re-renders
 const ScrollProgress = () => {
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
@@ -128,6 +129,7 @@ const ScrollProgress = () => {
   );
 };
 
+// OPTIMIZED: Added will-change-transform and hardware acceleration to prevent lagging
 const AnimatedBackground = () => (
   <div className="fixed inset-0 z-[-1] overflow-hidden bg-slate-950">
     <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 brightness-100 contrast-150"></div>
@@ -248,6 +250,7 @@ const App = () => {
   const [loading, setLoading] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
 
+  // Prevent scrolling when mobile menu is open
   useEffect(() => {
     if (menuOpen) document.body.style.overflow = 'hidden';
     else document.body.style.overflow = 'unset';
@@ -264,6 +267,7 @@ const App = () => {
       <nav className="fixed top-0 w-full z-50 backdrop-blur-lg border-b border-white/10 bg-[#0f172a]/70">
         <div className="container mx-auto px-6 py-4 flex justify-between items-center relative z-50">
           
+          {/* Logo */}
           <div 
             className="flex items-center gap-2 cursor-pointer" 
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
@@ -271,6 +275,7 @@ const App = () => {
              <img src="/Images/logo.png" alt="IykeSol Logo" className="h-10 w-auto object-contain" />
           </div>
           
+          {/* Desktop Nav */}
           <div className="hidden md:flex items-center space-x-8 text-sm font-medium text-gray-300">
             {['Home', 'Skills', 'Projects', 'Contact'].map((item) => (
               <a key={item} href={`#${item.toLowerCase()}`} className="hover:text-white transition-colors relative group">
@@ -280,6 +285,7 @@ const App = () => {
             ))}
           </div>
 
+          {/* Mobile Hamburger Toggle */}
           <div className="md:hidden text-white">
             <button onClick={() => setMenuOpen(!menuOpen)} className="p-2 focus:outline-none active:scale-95 transition-transform">
               {menuOpen ? <X size={32} /> : <Menu size={32} />}
@@ -287,6 +293,7 @@ const App = () => {
           </div>
         </div>
         
+        {/* Mobile Dropdown Menu */}
         <AnimatePresence>
           {menuOpen && (
             <motion.div 
@@ -325,6 +332,7 @@ const App = () => {
       <section id="home" className="relative min-h-screen flex items-center justify-center pt-32 pb-40">
         <div className="container mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
           
+          {/* Text Content */}
           <div className="z-10 order-1 md:order-1">
               <motion.div 
                 initial={{ opacity: 0, x: -50 }}
@@ -368,6 +376,7 @@ const App = () => {
               </div>
           </div>
 
+          {/* Code Editor */}
           <div className="relative z-0 flex justify-center order-2 md:order-2 mt-12 md:mt-0">
               <div className="relative w-full max-w-[500px] bg-[#1e1e1e] rounded-xl shadow-2xl border border-white/10 transform md:rotate-3 hover:rotate-0 transition-transform duration-500 group">
                 <div className="h-10 bg-[#252526] flex items-center px-4 gap-2 border-b border-black/50 rounded-t-xl">
@@ -379,6 +388,7 @@ const App = () => {
                 <div className="p-6 md:p-8 overflow-x-auto">
                   <TypewriterCode />
                 </div>
+                {/* DECORATIVE ICONS */}
                 <motion.div className="absolute -right-3 -top-3 md:-right-5 md:-top-5 w-10 h-10 md:w-12 md:h-12 bg-[#2d3748] rounded-lg flex items-center justify-center border border-white/20 shadow-lg z-20" whileHover={{ scale: 1.1, rotate: 10 }}><FaReact size={24} className="text-[#61DAFB]" /></motion.div>
                 <motion.div className="absolute -left-3 -bottom-3 md:-left-5 md:-bottom-5 w-10 h-10 md:w-12 md:h-12 bg-[#2d3748] rounded-lg flex items-center justify-center border border-white/20 shadow-lg z-20" whileHover={{ scale: 1.1, rotate: -10 }}><FaPython size={24} className="text-[#3776AB]" /></motion.div>
                 <motion.div className="absolute -right-3 bottom-12 md:-right-5 md:bottom-16 w-10 h-10 md:w-12 md:h-12 bg-[#2d3748] rounded-lg flex items-center justify-center border border-white/20 shadow-lg z-20" whileHover={{ scale: 1.1, rotate: 10 }}><SiSolidity size={24} className="text-gray-300" /></motion.div>
@@ -388,7 +398,7 @@ const App = () => {
         </div>
       </section>
 
-      {/* TECH STACK CAROUSEL */}
+      {/* TECH STACK */}
       <div className="relative z-20 py-12 bg-black/40 border-y border-white/10 overflow-hidden backdrop-blur-sm">
         <div className="flex animate-infinite-scroll whitespace-nowrap gap-16 min-w-full justify-center items-center">
           {[...techStack, ...techStack].map((tech, i) => (
@@ -400,12 +410,11 @@ const App = () => {
         </div>
       </div>
 
-      {/* SKILLS - UPDATED TO 3 COLUMNS ON MOBILE */}
+      {/* SKILLS */}
       <section id="skills" className="py-32 px-6">
          <div className="container mx-auto max-w-6xl">
             <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-4xl md:text-5xl font-bold mb-16 text-center">Tech Stack & Skills</motion.h2>
-            {/* grid-cols-3 handles the 3-column layout for mobile */}
-            <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
                {techStack.map((tech, index) => (
                  <motion.div
                    key={index}
@@ -414,18 +423,18 @@ const App = () => {
                    transition={{ delay: index * 0.05, type: "spring" }}
                    viewport={{ once: true }}
                    whileHover={{ y: -10 }}
-                   className="group relative bg-white/5 border border-white/10 p-3 md:p-6 rounded-xl md:rounded-2xl flex flex-col items-center gap-2 md:gap-4 hover:bg-white/10 transition-all cursor-default"
+                   className="group relative bg-white/5 border border-white/10 p-6 rounded-2xl flex flex-col items-center gap-4 hover:bg-white/10 transition-all cursor-default"
                  >
                    <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 rounded-2xl transition-opacity" />
-                   <img src={tech.icon} alt={tech.name} loading="lazy" className="w-10 h-10 md:w-16 md:h-16 object-contain group-hover:scale-110 transition-transform duration-300 drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]" />
-                   <span className="text-[10px] md:text-base font-semibold tracking-wide text-gray-300 group-hover:text-white text-center">{tech.name}</span>
+                   <img src={tech.icon} alt={tech.name} loading="lazy" className="w-16 h-16 object-contain group-hover:scale-110 transition-transform duration-300 drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]" />
+                   <span className="font-semibold tracking-wide text-gray-300 group-hover:text-white">{tech.name}</span>
                  </motion.div>
                ))}
             </div>
          </div>
       </section>
 
-      {/* PROJECTS SECTION */}
+      {/* --- PROJECTS SECTION --- */}
       <section id="projects" className="py-20 px-4 md:px-6 relative">
         <div className="container mx-auto max-w-6xl">
           <motion.div 
@@ -449,6 +458,7 @@ const App = () => {
                 className={`bg-[#1e1e1e] rounded-2xl border border-white/10 overflow-hidden hover:border-blue-500/30 transition-all duration-300 flex flex-col ${project.layout === 'featured' ? 'md:col-span-2' : ''}`}
               >
                 
+                {/* Images Area - Added lazy loading */}
                 <div className="relative bg-gray-900 p-3 md:p-4">
                    {project.images.length > 1 ? (
                      <div className={`grid gap-2 ${project.images.length >= 3 ? 'grid-cols-1 md:grid-cols-3' : 'grid-cols-2'}`}>
@@ -475,6 +485,7 @@ const App = () => {
                    )}
                 </div>
 
+                {/* Content Area */}
                 <div className="p-5 md:p-8 flex-1 flex flex-col">
                    <div className="mb-3">
                      <span className={`text-xs md:text-sm font-bold uppercase tracking-wider text-transparent bg-clip-text bg-gradient-to-r ${project.color}`}>
@@ -485,6 +496,7 @@ const App = () => {
                    <h3 className="text-xl md:text-3xl font-bold mb-3 text-white">{project.title}</h3>
                    <p className="text-gray-300 text-sm md:text-base leading-relaxed mb-6 flex-1">{project.desc}</p>
                    
+                   {/* Tech Stack Tags */}
                    <div className="flex flex-wrap gap-2 mb-6">
                      {project.tech.map(t => (
                        <span key={t} className="px-3 py-1 text-[10px] md:text-xs font-semibold rounded-full bg-white/5 text-gray-300 border border-white/10">
@@ -508,10 +520,11 @@ const App = () => {
         </div>
       </section>
 
-      {/* CONTACT SECTION */}
+      {/* --- CONTACT --- */}
       <section id="contact" className="py-20 px-6 bg-gradient-to-b from-transparent to-blue-900/10">
         <div className="container mx-auto max-w-4xl text-center">
           
+          {/* Contact Card */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
@@ -547,11 +560,16 @@ const App = () => {
             </div>
           </motion.div>
 
+          {/* --- FOOTER --- */}
           <footer className="border-t border-white/10 pt-8">
             <div className="flex flex-col-reverse md:flex-row justify-between items-center gap-4">
+              
+              {/* Copyright */}
               <p className="text-gray-400 text-sm">
                 © {new Date().getFullYear()} Kalu Ikechukwu. All rights reserved.
               </p>
+
+              {/* Navigation */}
               <div className="flex gap-6 text-sm font-medium text-gray-300">
                 <a href="#home" className="hover:text-white transition-colors">Home</a>
                 <a href="#projects" className="hover:text-white transition-colors">Projects</a>
