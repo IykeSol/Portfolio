@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion, useScroll, useTransform, useSpring, AnimatePresence } from 'framer-motion';
+import { motion, useScroll, useSpring, AnimatePresence } from 'framer-motion';
 import { 
   Menu, X, Github, Mail, ExternalLink, 
   ChevronRight, Globe
@@ -112,23 +112,24 @@ const projects = [
 
 // --- COMPONENTS ---
 
+// OPTIMIZED: Uses Framer Motion native layout animations instead of React State to prevent re-renders
 const ScrollProgress = () => {
-  const [scrollProgress, setScrollProgress] = useState(0);
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const totalScroll = document.documentElement.scrollTop;
-      const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-      const scroll = totalScroll / windowHeight;
-      setScrollProgress(scroll);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  return <div className="fixed top-0 left-0 h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 z-50 transition-all duration-100" style={{ width: `${scrollProgress * 100}%` }} />;
+  return (
+    <motion.div 
+      className="fixed top-0 left-0 h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 z-50 origin-left" 
+      style={{ scaleX }} 
+    />
+  );
 };
 
+// OPTIMIZED: Added will-change-transform and hardware acceleration to prevent lagging
 const AnimatedBackground = () => (
   <div className="fixed inset-0 z-[-1] overflow-hidden bg-slate-950">
     <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 brightness-100 contrast-150"></div>
@@ -139,7 +140,7 @@ const AnimatedBackground = () => (
         rotate: [0, 90, 0]
       }}
       transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-      className="absolute -top-1/2 -left-1/2 w-full h-full bg-blue-600/20 rounded-full blur-[120px]" 
+      className="absolute -top-1/2 -left-1/2 w-full h-full bg-blue-600/20 rounded-full blur-[120px] transform-gpu will-change-transform" 
     />
     <motion.div 
       animate={{ 
@@ -148,7 +149,7 @@ const AnimatedBackground = () => (
         rotate: [0, -90, 0]
       }}
       transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-      className="absolute -bottom-1/2 -right-1/2 w-full h-full bg-purple-600/20 rounded-full blur-[120px]" 
+      className="absolute -bottom-1/2 -right-1/2 w-full h-full bg-purple-600/20 rounded-full blur-[120px] transform-gpu will-change-transform" 
     />
   </div>
 );
@@ -175,7 +176,6 @@ const Loader = ({ onComplete }) => {
       className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black text-white"
       exit={{ y: -window.innerHeight, transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] } }}
     >
-      {/* Logo Animation */}
       <motion.img 
         src="/Images/logo.png" 
         alt="IykeSol Logo" 
@@ -231,7 +231,6 @@ const TypewriterCode = () => {
             "text-blue-300"
           }>
             {line}
-            {/* Injecting Globe Icon next to location line */}
             {i === 4 && <span className="ml-1 inline-block"><Globe size={16} className="text-blue-400 inline-block"/></span>}
           </span>
         </motion.div>
@@ -250,6 +249,12 @@ const TypewriterCode = () => {
 const App = () => {
   const [loading, setLoading] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
+
+  // Prevent scrolling when mobile menu is open
+  useEffect(() => {
+    if (menuOpen) document.body.style.overflow = 'hidden';
+    else document.body.style.overflow = 'unset';
+  }, [menuOpen]);
 
   if (loading) return <AnimatePresence><Loader onComplete={() => setLoading(false)} /></AnimatePresence>;
 
@@ -308,7 +313,6 @@ const App = () => {
                       setMenuOpen(false);
                       const element = document.getElementById(item.toLowerCase());
                       if (element) {
-                        // Calculate scroll position to account for fixed header (approx 85px)
                         const y = element.getBoundingClientRect().top + window.scrollY - 85; 
                         window.scrollTo({top: y, behavior: 'smooth'});
                       }
@@ -324,7 +328,7 @@ const App = () => {
         </AnimatePresence>
       </nav>
 
-      {/* HERO SECTION (Static Layout - No Parallax Overlap) */}
+      {/* HERO SECTION */}
       <section id="home" className="relative min-h-screen flex items-center justify-center pt-32 pb-40">
         <div className="container mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
           
@@ -399,7 +403,7 @@ const App = () => {
         <div className="flex animate-infinite-scroll whitespace-nowrap gap-16 min-w-full justify-center items-center">
           {[...techStack, ...techStack].map((tech, i) => (
             <div key={i} className="flex items-center gap-4 text-gray-400 font-bold text-xl uppercase tracking-widest opacity-70 hover:opacity-100 transition-opacity">
-               <img src={tech.icon} alt={tech.name} className="w-10 h-10 object-contain" />
+               <img src={tech.icon} alt={tech.name} loading="lazy" className="w-10 h-10 object-contain" />
                <span>{tech.name}</span>
             </div>
           ))}
@@ -422,7 +426,7 @@ const App = () => {
                    className="group relative bg-white/5 border border-white/10 p-6 rounded-2xl flex flex-col items-center gap-4 hover:bg-white/10 transition-all cursor-default"
                  >
                    <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 rounded-2xl transition-opacity" />
-                   <img src={tech.icon} alt={tech.name} className="w-16 h-16 object-contain group-hover:scale-110 transition-transform duration-300 drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]" />
+                   <img src={tech.icon} alt={tech.name} loading="lazy" className="w-16 h-16 object-contain group-hover:scale-110 transition-transform duration-300 drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]" />
                    <span className="font-semibold tracking-wide text-gray-300 group-hover:text-white">{tech.name}</span>
                  </motion.div>
                ))}
@@ -436,6 +440,7 @@ const App = () => {
           <motion.div 
              initial={{ opacity: 0, y: 30 }}
              whileInView={{ opacity: 1, y: 0 }}
+             viewport={{ once: true }}
              className="mb-12 md:mb-20 space-y-4"
           >
             <h2 className="text-4xl md:text-6xl font-bold">Featured Projects</h2>
@@ -453,7 +458,7 @@ const App = () => {
                 className={`bg-[#1e1e1e] rounded-2xl border border-white/10 overflow-hidden hover:border-blue-500/30 transition-all duration-300 flex flex-col ${project.layout === 'featured' ? 'md:col-span-2' : ''}`}
               >
                 
-                {/* Images Area */}
+                {/* Images Area - Added lazy loading */}
                 <div className="relative bg-gray-900 p-3 md:p-4">
                    {project.images.length > 1 ? (
                      <div className={`grid gap-2 ${project.images.length >= 3 ? 'grid-cols-1 md:grid-cols-3' : 'grid-cols-2'}`}>
@@ -461,6 +466,7 @@ const App = () => {
                          <div key={i} className="overflow-hidden rounded-lg border border-white/5 bg-gray-800">
                             <img 
                               src={img} 
+                              loading="lazy"
                               alt={`${project.title} screenshot`} 
                               className="w-full h-auto object-contain hover:scale-105 transition-transform duration-500" 
                             />
@@ -471,6 +477,7 @@ const App = () => {
                      <div className="overflow-hidden rounded-lg border border-white/5 bg-gray-800">
                         <img 
                           src={project.images[0]} 
+                          loading="lazy"
                           alt={project.title} 
                           className="w-full h-auto max-h-[300px] md:max-h-[450px] object-contain hover:scale-105 transition-transform duration-500" 
                         />
@@ -478,7 +485,7 @@ const App = () => {
                    )}
                 </div>
 
-                {/* Content Area - Optimized for Mobile */}
+                {/* Content Area */}
                 <div className="p-5 md:p-8 flex-1 flex flex-col">
                    <div className="mb-3">
                      <span className={`text-xs md:text-sm font-bold uppercase tracking-wider text-transparent bg-clip-text bg-gradient-to-r ${project.color}`}>
