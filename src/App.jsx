@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, useScroll, useTransform, useSpring, AnimatePresence } from 'framer-motion';
 import { 
   Menu, X, Github, Mail, ExternalLink, 
-  ChevronRight, Globe // Added Globe for the code block
+  ChevronRight, Globe
 } from 'lucide-react';
 import { FaTwitter, FaWhatsapp, FaReact, FaPython, FaJs, FaLinkedin } from 'react-icons/fa';
 import { SiSolidity } from 'react-icons/si';
@@ -231,7 +231,7 @@ const TypewriterCode = () => {
             "text-blue-300"
           }>
             {line}
-            {/* Injecting Globe Icon */}
+            {/* Injecting Globe Icon next to location line */}
             {i === 4 && <span className="ml-1 inline-block"><Globe size={16} className="text-blue-400 inline-block"/></span>}
           </span>
         </motion.div>
@@ -308,7 +308,8 @@ const App = () => {
                       setMenuOpen(false);
                       const element = document.getElementById(item.toLowerCase());
                       if (element) {
-                        const y = element.getBoundingClientRect().top + window.scrollY - 85;
+                        // Calculate scroll position to account for fixed header (approx 85px)
+                        const y = element.getBoundingClientRect().top + window.scrollY - 85; 
                         window.scrollTo({top: y, behavior: 'smooth'});
                       }
                     }}
