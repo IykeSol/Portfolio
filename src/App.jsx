@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, useScroll, useTransform, useSpring, AnimatePresence } from 'framer-motion';
 import { 
   Menu, X, Github, Mail, ExternalLink, 
-  ChevronRight 
+  ChevronRight, Globe // Added Globe for the code block
 } from 'lucide-react';
 import { FaTwitter, FaWhatsapp, FaReact, FaPython, FaJs, FaLinkedin } from 'react-icons/fa';
 import { SiSolidity } from 'react-icons/si';
@@ -90,7 +90,7 @@ const projects = [
   },
   {
     title: "CertiVerify",
-    category: "Blockchain Education",
+    category: "Blockchain",
     desc: "A decentralized certificate verification platform deployed on Sepolia Ethereum network. Prevents fraud by allowing instant validation of educational credentials via blockchain.",
     tech: ["HTML", "Tailwind CSS", "JavaScript", "Web3.js", "Solidity", "MetaMask"],
     link: "https://certi-verify.pages.dev/",
@@ -100,7 +100,7 @@ const projects = [
   },
   {
     title: "TribeChat",
-    category: "Dex Social Media",
+    category: "SocialFi",
     desc: "A decentralized social media platform enabling creators to monetize content through a unique 'Keys' system. Features real-time impression tracking, decentralized profiles, and key trading.",
     tech: ["HTML", "CSS", "JavaScript", "Web3.js", "Solidity", "MetaMask"],
     link: "https://tribechat.pages.dev/",
@@ -177,7 +177,7 @@ const Loader = ({ onComplete }) => {
     >
       {/* Logo Animation */}
       <motion.img 
-        src="Images/logo.png" 
+        src="/Images/logo.png" 
         alt="IykeSol Logo" 
         className="w-32 md:w-48 h-auto object-contain mb-8"
         initial={{ opacity: 0, y: 20 }}
@@ -209,7 +209,7 @@ const TypewriterCode = () => {
     "  name: 'Kalu Ikechukwu',",
     "  role: 'Full Stack | Blockchain | ML Eng',",
     "  stack: ['React', 'Python', 'Solidity', 'JS'],",
-    "  location: 'Worldwide 🌍',",
+    "  location: 'Worldwide',",
     "  status: 'Ready to Build Your Next Project!',",
     "};"
   ];
@@ -222,7 +222,7 @@ const TypewriterCode = () => {
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: i * 0.4, duration: 0.5 }}
-          className="flex"
+          className="flex items-center"
         >
           <span className="text-gray-600 mr-4 select-none w-6 text-right">{i + 1}</span>
           <span className={
@@ -231,6 +231,8 @@ const TypewriterCode = () => {
             "text-blue-300"
           }>
             {line}
+            {/* Injecting Globe Icon */}
+            {i === 4 && <span className="ml-1 inline-block"><Globe size={16} className="text-blue-400 inline-block"/></span>}
           </span>
         </motion.div>
       ))}
@@ -265,7 +267,7 @@ const App = () => {
             className="flex items-center gap-2 cursor-pointer" 
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           >
-             <img src="Images/logo.png" alt="IykeSol Logo" className="h-10 w-auto object-contain" />
+             <img src="/Images/logo.png" alt="IykeSol Logo" className="h-10 w-auto object-contain" />
           </div>
           
           {/* Desktop Nav */}
@@ -321,7 +323,7 @@ const App = () => {
         </AnimatePresence>
       </nav>
 
-      {/* HERO SECTION */}
+      {/* HERO SECTION (Static Layout - No Parallax Overlap) */}
       <section id="home" className="relative min-h-screen flex items-center justify-center pt-32 pb-40">
         <div className="container mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
           
@@ -541,7 +543,6 @@ const App = () => {
                </a>
 
                <a href="https://x.com/agbaghaSol" target="_blank" className="flex items-center justify-center gap-2 px-6 py-3 bg-black border border-white/20 text-white rounded-lg hover:bg-gray-900 transition">
-                  {/* Using the X icon from lucide-react which is already imported */}
                   <X size={18} /> X
                </a>
 
@@ -551,7 +552,7 @@ const App = () => {
             </div>
           </motion.div>
 
-          {/*  FOOTER */}
+          {/* --- FOOTER --- */}
           <footer className="border-t border-white/10 pt-8">
             <div className="flex flex-col-reverse md:flex-row justify-between items-center gap-4">
               
