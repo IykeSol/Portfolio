@@ -177,7 +177,7 @@ const Loader = ({ onComplete }) => {
     >
       {/* Logo Animation */}
       <motion.img 
-        src="/logo.png" 
+        src="Images/logo.png" 
         alt="IykeSol Logo" 
         className="w-32 md:w-48 h-auto object-contain mb-8"
         initial={{ opacity: 0, y: 20 }}
@@ -265,7 +265,7 @@ const App = () => {
             className="flex items-center gap-2 cursor-pointer" 
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           >
-             <img src="/logo.png" alt="IykeSol Logo" className="h-10 w-auto object-contain" />
+             <img src="Images/logo.png" alt="IykeSol Logo" className="h-10 w-auto object-contain" />
           </div>
           
           {/* Desktop Nav */}
