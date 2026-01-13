@@ -90,7 +90,7 @@ const projects = [
   },
   {
     title: "CertiVerify",
-    category: "Blockchain",
+    category: "Blockchain Education",
     desc: "A decentralized certificate verification platform deployed on Sepolia Ethereum network. Prevents fraud by allowing instant validation of educational credentials via blockchain.",
     tech: ["HTML", "Tailwind CSS", "JavaScript", "Web3.js", "Solidity", "MetaMask"],
     link: "https://certi-verify.pages.dev/",
@@ -100,7 +100,7 @@ const projects = [
   },
   {
     title: "TribeChat",
-    category: "SocialFi",
+    category: "Dex Social Media",
     desc: "A decentralized social media platform enabling creators to monetize content through a unique 'Keys' system. Features real-time impression tracking, decentralized profiles, and key trading.",
     tech: ["HTML", "CSS", "JavaScript", "Web3.js", "Solidity", "MetaMask"],
     link: "https://tribechat.pages.dev/",
@@ -113,9 +113,20 @@ const projects = [
 // --- COMPONENTS ---
 
 const ScrollProgress = () => {
-  const { scrollYProgress } = useScroll();
-  const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
-  return <motion.div className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 origin-left z-50" style={{ scaleX }} />;
+  const [scrollProgress, setScrollProgress] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const totalScroll = document.documentElement.scrollTop;
+      const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scroll = totalScroll / windowHeight;
+      setScrollProgress(scroll);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  return <div className="fixed top-0 left-0 h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 z-50 transition-all duration-100" style={{ width: `${scrollProgress * 100}%` }} />;
 };
 
 const AnimatedBackground = () => (
@@ -166,7 +177,7 @@ const Loader = ({ onComplete }) => {
     >
       {/* Logo Animation */}
       <motion.img 
-        src="public/Images/logo.png" 
+        src="/logo.png" 
         alt="IykeSol Logo" 
         className="w-32 md:w-48 h-auto object-contain mb-8"
         initial={{ opacity: 0, y: 20 }}
@@ -237,9 +248,6 @@ const TypewriterCode = () => {
 const App = () => {
   const [loading, setLoading] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
-  const { scrollY } = useScroll();
-  const y1 = useTransform(scrollY, [0, 500], [0, 200]);
-  const y2 = useTransform(scrollY, [0, 500], [0, -150]);
 
   if (loading) return <AnimatePresence><Loader onComplete={() => setLoading(false)} /></AnimatePresence>;
 
@@ -249,11 +257,7 @@ const App = () => {
       <AnimatedBackground />
 
       {/* --- FIXED NAVBAR --- */}
-      <motion.nav 
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        className="fixed top-0 w-full z-50 backdrop-blur-lg border-b border-white/10 bg-[#0f172a]/70" // Deep Slate Blue with transparency
-      >
+      <nav className="fixed top-0 w-full z-50 backdrop-blur-lg border-b border-white/10 bg-[#0f172a]/70">
         <div className="container mx-auto px-6 py-4 flex justify-between items-center relative z-50">
           
           {/* Logo */}
@@ -261,7 +265,7 @@ const App = () => {
             className="flex items-center gap-2 cursor-pointer" 
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           >
-             <img src="public/Images/logo.png" alt="IykeSol Logo" className="h-10 w-auto object-contain" />
+             <img src="/logo.png" alt="IykeSol Logo" className="h-10 w-auto object-contain" />
           </div>
           
           {/* Desktop Nav */}
@@ -290,9 +294,9 @@ const App = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.2 }}
-              className="md:hidden fixed top-[72px] left-0 w-full bg-[#0f172a] border-b border-white/10 z-50 shadow-2xl"
+              className="md:hidden fixed top-[80px] left-0 w-full bg-[#0f172a] border-b border-white/10 z-40 shadow-2xl"
             >
-              <div className="flex flex-col py-2">
+              <div className="flex flex-col py-4">
                 {['Home', 'Skills', 'Projects', 'Contact'].map((item) => (
                   <a 
                     key={item} 
@@ -315,13 +319,14 @@ const App = () => {
             </motion.div>
           )}
         </AnimatePresence>
-      </motion.nav>
+      </nav>
 
       {/* HERO SECTION */}
-      <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden pt-28 pb-20 md:pt-0 md:pb-0">
+      <section id="home" className="relative min-h-screen flex items-center justify-center pt-32 pb-40">
         <div className="container mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
+          
+          {/* Text Content */}
           <div className="z-10 order-1 md:order-1">
-             <motion.div style={{ y: window.innerWidth > 768 ? y1 : 0 }}>
               <motion.div 
                 initial={{ opacity: 0, x: -50 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -362,11 +367,10 @@ const App = () => {
                   Contact Me
                 </motion.a>
               </div>
-            </motion.div>
           </div>
 
+          {/* Code Editor */}
           <div className="relative z-0 flex justify-center order-2 md:order-2 mt-12 md:mt-0">
-             <motion.div style={{ y: window.innerWidth > 768 ? y2 : 0 }}>
               <div className="relative w-full max-w-[500px] bg-[#1e1e1e] rounded-xl shadow-2xl border border-white/10 transform md:rotate-3 hover:rotate-0 transition-transform duration-500 group">
                 <div className="h-10 bg-[#252526] flex items-center px-4 gap-2 border-b border-black/50 rounded-t-xl">
                   <div className="w-3 h-3 rounded-full bg-red-500" />
@@ -383,13 +387,12 @@ const App = () => {
                 <motion.div className="absolute -right-3 bottom-12 md:-right-5 md:bottom-16 w-10 h-10 md:w-12 md:h-12 bg-[#2d3748] rounded-lg flex items-center justify-center border border-white/20 shadow-lg z-20" whileHover={{ scale: 1.1, rotate: 10 }}><SiSolidity size={24} className="text-gray-300" /></motion.div>
                 <motion.div className="absolute -left-3 top-12 md:-left-5 md:top-16 w-10 h-10 md:w-12 md:h-12 bg-[#2d3748] rounded-lg flex items-center justify-center border border-white/20 shadow-lg z-20" whileHover={{ scale: 1.1, rotate: -10 }}><FaJs size={24} className="text-[#F7DF1E]" /></motion.div>
               </div>
-            </motion.div>
           </div>
         </div>
       </section>
 
       {/* TECH STACK */}
-      <div className="py-12 bg-white/5 border-y border-white/10 overflow-hidden">
+      <div className="relative z-20 py-12 bg-black/40 border-y border-white/10 overflow-hidden backdrop-blur-sm">
         <div className="flex animate-infinite-scroll whitespace-nowrap gap-16 min-w-full justify-center items-center">
           {[...techStack, ...techStack].map((tech, i) => (
             <div key={i} className="flex items-center gap-4 text-gray-400 font-bold text-xl uppercase tracking-widest opacity-70 hover:opacity-100 transition-opacity">
@@ -529,20 +532,20 @@ const App = () => {
                   <Mail size={18} /> ikegold9@gmail.com
                </a>
 
-               <a href="https://www.linkedin.com/in/kalu-ikechukwu-4730683a1" className="flex items-center justify-center gap-2 px-6 py-3 bg-[#0077b5] text-white font-bold rounded-lg hover:brightness-110 transition">
+               <a href="https://www.linkedin.com/in/kalu-ikechukwu-4730683a1" target="_blank" className="flex items-center justify-center gap-2 px-6 py-3 bg-[#0077b5] text-white font-bold rounded-lg hover:brightness-110 transition">
                   <FaLinkedin size={18} /> LinkedIn
                </a>
 
-               <a href="https://github.com/IykeSol" className="flex items-center justify-center gap-2 px-6 py-3 bg-black border border-white/20 rounded-lg hover:bg-white/10 transition">
+               <a href="https://github.com/IykeSol" target="_blank" className="flex items-center justify-center gap-2 px-6 py-3 bg-black border border-white/20 rounded-lg hover:bg-white/10 transition">
                   <Github size={18} /> GitHub
                </a>
 
-               <a href="https://x.com/agbaghaSol" className="flex items-center justify-center gap-2 px-6 py-3 bg-black border border-white/20 text-white rounded-lg hover:bg-gray-900 transition">
+               <a href="https://x.com/agbaghaSol" target="_blank" className="flex items-center justify-center gap-2 px-6 py-3 bg-black border border-white/20 text-white rounded-lg hover:bg-gray-900 transition">
                   {/* Using the X icon from lucide-react which is already imported */}
                   <X size={18} /> X
                </a>
 
-               <a href="https://wa.me/2348126832604" className="flex items-center justify-center gap-2 px-6 py-3 bg-[#25D366] text-white rounded-lg hover:brightness-110 transition">
+               <a href="https://wa.me/2348126832604" target="_blank" className="flex items-center justify-center gap-2 px-6 py-3 bg-[#25D366] text-white rounded-lg hover:brightness-110 transition">
                   <FaWhatsapp size={18} /> WhatsApp
                </a>
             </div>
