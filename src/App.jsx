@@ -131,7 +131,7 @@ const ScrollProgress = () => {
 
 // OPTIMIZED: Added will-change-transform and hardware acceleration to prevent lagging
 const AnimatedBackground = () => (
-  <div className="fixed inset-0 z-[-1] overflow-hidden bg-slate-950">
+  <div className="fixed inset-0 h-[100dvh] z-[-1] overflow-hidden bg-[#020617] pointer-events-none">
     <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 brightness-100 contrast-150"></div>
     <motion.div 
       animate={{ 
@@ -174,7 +174,7 @@ const Loader = ({ onComplete }) => {
   return (
     <motion.div 
       className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black text-white"
-      exit={{ y: -window.innerHeight, transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] } }}
+      exit={{ opacity: 0, transition: { duration: 0.5 } }} // Cleaner fade exit
     >
       <motion.img 
         src="/Images/logo.png" 
@@ -259,7 +259,7 @@ const App = () => {
   if (loading) return <AnimatePresence><Loader onComplete={() => setLoading(false)} /></AnimatePresence>;
 
   return (
-    <div className="min-h-screen text-white font-sans selection:bg-blue-500/30 selection:text-blue-200">
+  <div className="min-h-screen bg-[#020617] text-white font-sans overflow-x-hidden selection:bg-blue-500/30 selection:text-blue-200">
       <ScrollProgress />
       <AnimatedBackground />
 
@@ -414,7 +414,7 @@ const App = () => {
       <section id="skills" className="py-32 px-6">
          <div className="container mx-auto max-w-6xl">
             <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-4xl md:text-5xl font-bold mb-16 text-center">Tech Stack & Skills</motion.h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
+            <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-6">
                {techStack.map((tech, index) => (
                  <motion.div
                    key={index}
@@ -423,7 +423,7 @@ const App = () => {
                    transition={{ delay: index * 0.05, type: "spring" }}
                    viewport={{ once: true }}
                    whileHover={{ y: -10 }}
-                   className="group relative bg-white/5 border border-white/10 p-6 rounded-2xl flex flex-col items-center gap-4 hover:bg-white/10 transition-all cursor-default"
+          className="group relative bg-white/5 border border-white/10 p-3 md:p-6 rounded-xl md:rounded-2xl flex flex-col items-center gap-2 md:gap-4 hover:bg-white/10 transition-all cursor-default"
                  >
                    <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 rounded-2xl transition-opacity" />
                    <img src={tech.icon} alt={tech.name} loading="lazy" className="w-16 h-16 object-contain group-hover:scale-110 transition-transform duration-300 drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]" />
