@@ -1,16 +1,30 @@
-# React + Vite
+# IykeSol - Modern Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A high-performance, responsive portfolio showcasing expertise in **Full Stack Development**, **Blockchain Technology**, and **Machine Learning**.
 
-Currently, two official plugins are available:
+![IykeSol Logo](/logo.png)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Overview
 
-## React Compiler
+This portfolio is built with modern web technologies, focusing on smooth animations, clean UI, and a professional presentation of diverse technical projects.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🛠️ Tech Stack
 
-## Expanding the ESLint configuration
+- **Frontend**: React 19, Vite, Tailwind CSS
+- **Animations**: Framer Motion
+- **Icons**: Lucide React, React Icons
+- **Backend / Database**: Node.js, Express, MongoDB, Supabase
+- **Specialized**: Solidity (Blockchain), TensorFlow/Python (Machine Learning)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🌟 Featured Projects
+
+1.  **Intelligent Soccer Prediction System**: ML-powered match analysis integrated with Gemini API.
+2.  **IYKESOL Crypto Bank**: Decentralized banking platform on Ethereum Sepolia.
+3.  **Stella Collections**: Premium contemporary fashion e-commerce store.
+4.  **Token Safety Scanner**: Crypto token security analysis across multiple chains.
+5.  **TribeChat**: Decentralized SocialFi platform.
+
+
+## 📄 License
+
+© 2026 Kalu Ikechukwu. All rights reserved.
