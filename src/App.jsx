@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion, useScroll, useSpring, AnimatePresence } from 'framer-motion';
+import { motion as Motion, useScroll, useSpring, AnimatePresence } from 'framer-motion';
 import { 
   Menu, X, Github, Mail, ExternalLink, 
   ChevronRight, Globe
@@ -24,7 +24,8 @@ const techStack = [
   { name: 'MongoDB', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg' },
   { name: 'TensorFlow', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tensorflow/tensorflow-original.svg' },
   { name: 'Streamlit', icon: 'https://streamlit.io/images/brand/streamlit-mark-color.png' },
-  { name: 'Web3.js', icon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/MetaMask_Fox.svg/2048px-MetaMask_Fox.svg.png' }, 
+  { name: 'Supabase', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/supabase/supabase-original.svg' },
+
 ];
 
 const projects = [
@@ -49,14 +50,14 @@ const projects = [
     color: "from-purple-600 to-pink-500"
   },
   {
-    title: "Iyke Clothing Store",
-    category: "E-Commerce",
-    desc: "Production-ready e-commerce platform featuring secure payment processing (Paystack), JWT authentication, order lifecycle management, and admin dashboard. Includes dynamic product catalog and multi-payment gateway support.",
-    tech: ["HTML5", "Tailwind CSS", "JavaScript", "Node.js", "Express.js", "MongoDB", "Mongoose", "Paystack", "JWT", "Cloudinary"],
-    link: "https://iyke-clothing-store.onrender.com",
-    images: ["/Images/Screenshot (2480).png"],
-    layout: "standard",
-    color: "from-orange-500 to-red-500"
+  title: "Stella Collections",
+  category: "E-Commerce",
+  desc: "A premium contemporary fashion store built for a seamless shopping experience. Features real-time inventory via Supabase, a secure authenticated admin dashboard, and automated customer order confirmations via EmailJS.",
+  tech: ["JavaScript", "Tailwind CSS", "Supabase", "EmailJS", "Vercel"],
+  link: "https://stellacollections.vercel.app/",
+  images: ["/Images/stella-collections.webp"], 
+  layout: "standard",
+  color: "from-red-600 to-rose-500"
   },
   {
     title: "Blockchain Food Ordering System",
@@ -112,7 +113,6 @@ const projects = [
 
 // --- COMPONENTS ---
 
-// OPTIMIZED: Uses Framer Motion native layout animations instead of React State to prevent re-renders
 const ScrollProgress = () => {
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
@@ -122,18 +122,17 @@ const ScrollProgress = () => {
   });
 
   return (
-    <motion.div 
+    <Motion.div 
       className="fixed top-0 left-0 h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 z-50 origin-left" 
       style={{ scaleX }} 
     />
   );
 };
 
-// OPTIMIZED: Added will-change-transform and hardware acceleration to prevent lagging
 const AnimatedBackground = () => (
   <div className="fixed inset-0 h-[100dvh] z-[-1] overflow-hidden bg-[#020617] pointer-events-none">
     <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 brightness-100 contrast-150"></div>
-    <motion.div 
+    <Motion.div 
       animate={{ 
         scale: [1, 1.2, 1],
         opacity: [0.3, 0.5, 0.3],
@@ -142,7 +141,7 @@ const AnimatedBackground = () => (
       transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
       className="absolute -top-1/2 -left-1/2 w-full h-full bg-blue-600/20 rounded-full blur-[120px] transform-gpu will-change-transform" 
     />
-    <motion.div 
+    <Motion.div 
       animate={{ 
         scale: [1.2, 1, 1.2],
         opacity: [0.3, 0.5, 0.3],
@@ -172,11 +171,11 @@ const Loader = ({ onComplete }) => {
   }, [onComplete]);
 
   return (
-    <motion.div 
+    <Motion.div 
       className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black text-white"
       exit={{ opacity: 0, transition: { duration: 0.5 } }} // Cleaner fade exit
     >
-      <motion.img 
+      <Motion.img 
         src="/Images/logo.png" 
         alt="IykeSol Logo" 
         className="w-32 md:w-48 h-auto object-contain mb-8"
@@ -186,20 +185,20 @@ const Loader = ({ onComplete }) => {
       />
 
       <div className="relative">
-        <motion.h1 
+        <Motion.h1 
           className="text-6xl md:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-r from-gray-100 to-gray-600"
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
         >
           {count}%
-        </motion.h1>
-        <motion.div 
+        </Motion.h1>
+        <Motion.div 
           className="absolute -bottom-2 left-0 h-1 bg-blue-600"
           initial={{ width: 0 }}
           animate={{ width: `${count}%` }}
         />
       </div>
-    </motion.div>
+    </Motion.div>
   );
 };
 
@@ -217,7 +216,7 @@ const TypewriterCode = () => {
   return (
     <div className="font-mono text-sm md:text-base leading-loose">
       {codeLines.map((line, i) => (
-        <motion.div
+        <Motion.div
           key={i}
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
@@ -233,9 +232,9 @@ const TypewriterCode = () => {
             {line}
             {i === 4 && <span className="ml-1 inline-block"><Globe size={16} className="text-blue-400 inline-block"/></span>}
           </span>
-        </motion.div>
+        </Motion.div>
       ))}
-      <motion.div 
+      <Motion.div 
         animate={{ opacity: [0, 1, 0] }}
         transition={{ repeat: Infinity, duration: 0.8 }}
         className="w-2 h-5 bg-blue-500 mt-1 ml-10"
@@ -250,7 +249,6 @@ const App = () => {
   const [loading, setLoading] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
 
-  // Prevent scrolling when mobile menu is open
   useEffect(() => {
     if (menuOpen) document.body.style.overflow = 'hidden';
     else document.body.style.overflow = 'unset';
@@ -263,7 +261,7 @@ const App = () => {
       <ScrollProgress />
       <AnimatedBackground />
 
-      {/* --- FIXED NAVBAR --- */}
+      {/* --- NAVBAR --- */}
       <nav className="fixed top-0 w-full z-50 backdrop-blur-lg border-b border-white/10 bg-[#0f172a]/70">
         <div className="container mx-auto px-6 py-4 flex justify-between items-center relative z-50">
           
@@ -296,7 +294,7 @@ const App = () => {
         {/* Mobile Dropdown Menu */}
         <AnimatePresence>
           {menuOpen && (
-            <motion.div 
+            <Motion.div 
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
@@ -323,7 +321,7 @@ const App = () => {
                   </a>
                 ))}
               </div>
-            </motion.div>
+            </Motion.div>
           )}
         </AnimatePresence>
       </nav>
@@ -334,14 +332,14 @@ const App = () => {
           
           {/* Text Content */}
           <div className="z-10 order-1 md:order-1">
-              <motion.div 
+              <Motion.div 
                 initial={{ opacity: 0, x: -50 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.5 }}
                 className="inline-block px-4 py-2 rounded-full border border-blue-500/30 bg-blue-500/10 text-blue-400 mb-6"
               >
                 Available for Hire
-              </motion.div>
+              </Motion.div>
               <h1 className="text-5xl md:text-8xl font-bold leading-tight mb-6">
                 Building <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-600">
@@ -357,22 +355,22 @@ const App = () => {
                 </p>
               </div>
               <div className="flex gap-4">
-                <motion.a 
+                <Motion.a 
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   href="#projects"
                   className="px-8 py-4 bg-white text-black font-bold rounded-lg hover:bg-gray-200 transition flex items-center gap-2"
                 >
                   View Work <ChevronRight size={20} />
-                </motion.a>
-                <motion.a 
+                </Motion.a>
+                <Motion.a 
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   href="#contact"
                   className="px-8 py-4 border border-white/20 rounded-lg hover:bg-white/5 transition font-medium"
                 >
                   Contact Me
-                </motion.a>
+                </Motion.a>
               </div>
           </div>
 
@@ -389,10 +387,10 @@ const App = () => {
                   <TypewriterCode />
                 </div>
                 {/* DECORATIVE ICONS */}
-                <motion.div className="absolute -right-3 -top-3 md:-right-5 md:-top-5 w-10 h-10 md:w-12 md:h-12 bg-[#2d3748] rounded-lg flex items-center justify-center border border-white/20 shadow-lg z-20" whileHover={{ scale: 1.1, rotate: 10 }}><FaReact size={24} className="text-[#61DAFB]" /></motion.div>
-                <motion.div className="absolute -left-3 -bottom-3 md:-left-5 md:-bottom-5 w-10 h-10 md:w-12 md:h-12 bg-[#2d3748] rounded-lg flex items-center justify-center border border-white/20 shadow-lg z-20" whileHover={{ scale: 1.1, rotate: -10 }}><FaPython size={24} className="text-[#3776AB]" /></motion.div>
-                <motion.div className="absolute -right-3 bottom-12 md:-right-5 md:bottom-16 w-10 h-10 md:w-12 md:h-12 bg-[#2d3748] rounded-lg flex items-center justify-center border border-white/20 shadow-lg z-20" whileHover={{ scale: 1.1, rotate: 10 }}><SiSolidity size={24} className="text-gray-300" /></motion.div>
-                <motion.div className="absolute -left-3 top-12 md:-left-5 md:top-16 w-10 h-10 md:w-12 md:h-12 bg-[#2d3748] rounded-lg flex items-center justify-center border border-white/20 shadow-lg z-20" whileHover={{ scale: 1.1, rotate: -10 }}><FaJs size={24} className="text-[#F7DF1E]" /></motion.div>
+                <Motion.div className="absolute -right-3 -top-3 md:-right-5 md:-top-5 w-10 h-10 md:w-12 md:h-12 bg-[#2d3748] rounded-lg flex items-center justify-center border border-white/20 shadow-lg z-20" whileHover={{ scale: 1.1, rotate: 10 }}><FaReact size={24} className="text-[#61DAFB]" /></Motion.div>
+                <Motion.div className="absolute -left-3 -bottom-3 md:-left-5 md:-bottom-5 w-10 h-10 md:w-12 md:h-12 bg-[#2d3748] rounded-lg flex items-center justify-center border border-white/20 shadow-lg z-20" whileHover={{ scale: 1.1, rotate: -10 }}><FaPython size={24} className="text-[#3776AB]" /></Motion.div>
+                <Motion.div className="absolute -right-3 bottom-12 md:-right-5 md:bottom-16 w-10 h-10 md:w-12 md:h-12 bg-[#2d3748] rounded-lg flex items-center justify-center border border-white/20 shadow-lg z-20" whileHover={{ scale: 1.1, rotate: 10 }}><SiSolidity size={24} className="text-gray-300" /></Motion.div>
+                <Motion.div className="absolute -left-3 top-12 md:-left-5 md:top-16 w-10 h-10 md:w-12 md:h-12 bg-[#2d3748] rounded-lg flex items-center justify-center border border-white/20 shadow-lg z-20" whileHover={{ scale: 1.1, rotate: -10 }}><FaJs size={24} className="text-[#F7DF1E]" /></Motion.div>
               </div>
           </div>
         </div>
@@ -413,10 +411,10 @@ const App = () => {
       {/* SKILLS */}
       <section id="skills" className="py-32 px-6">
          <div className="container mx-auto max-w-6xl">
-            <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-4xl md:text-5xl font-bold mb-16 text-center">Tech Stack & Skills</motion.h2>
+            <Motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-4xl md:text-5xl font-bold mb-16 text-center">Tech Stack & Skills</Motion.h2>
             <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-6">
                {techStack.map((tech, index) => (
-                 <motion.div
+                 <Motion.div
                    key={index}
                    initial={{ opacity: 0, scale: 0.5 }}
                    whileInView={{ opacity: 1, scale: 1 }}
@@ -428,7 +426,7 @@ const App = () => {
                    <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 rounded-2xl transition-opacity" />
                    <img src={tech.icon} alt={tech.name} loading="lazy" className="w-16 h-16 object-contain group-hover:scale-110 transition-transform duration-300 drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]" />
                    <span className="font-semibold tracking-wide text-gray-300 group-hover:text-white">{tech.name}</span>
-                 </motion.div>
+                 </Motion.div>
                ))}
             </div>
          </div>
@@ -437,7 +435,7 @@ const App = () => {
       {/* --- PROJECTS SECTION --- */}
       <section id="projects" className="py-20 px-4 md:px-6 relative">
         <div className="container mx-auto max-w-6xl">
-          <motion.div 
+          <Motion.div 
              initial={{ opacity: 0, y: 30 }}
              whileInView={{ opacity: 1, y: 0 }}
              viewport={{ once: true }}
@@ -445,11 +443,11 @@ const App = () => {
           >
             <h2 className="text-4xl md:text-6xl font-bold">Featured Projects</h2>
             <p className="text-lg text-gray-400">A collection of projects that define my expertise.</p>
-          </motion.div>
+          </Motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
             {projects.map((project, index) => (
-              <motion.div 
+              <Motion.div 
                 key={index}
                 initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -459,9 +457,9 @@ const App = () => {
               >
                 
                 {/* Images Area - Added lazy loading */}
-                <div className="relative bg-gray-900 p-3 md:p-4">
+                <div className="relative bg-gray-900">
                    {project.images.length > 1 ? (
-                     <div className={`grid gap-2 ${project.images.length >= 3 ? 'grid-cols-1 md:grid-cols-3' : 'grid-cols-2'}`}>
+                     <div className={`p-3 md:p-4 grid gap-2 ${project.images.length >= 3 ? 'grid-cols-1 md:grid-cols-3' : 'grid-cols-2'}`}>
                        {project.images.map((img, i) => (
                          <div key={i} className="overflow-hidden rounded-lg border border-white/5 bg-gray-800">
                             <img 
@@ -474,12 +472,12 @@ const App = () => {
                        ))}
                      </div>
                    ) : (
-                     <div className="overflow-hidden rounded-lg border border-white/5 bg-gray-800">
+                     <div className="overflow-hidden border-b border-white/10 bg-gray-800 aspect-video">
                         <img 
                           src={project.images[0]} 
                           loading="lazy"
                           alt={project.title} 
-                          className="w-full h-auto max-h-[300px] md:max-h-[450px] object-contain hover:scale-105 transition-transform duration-500" 
+                          className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-500" 
                         />
                      </div>
                    )}
@@ -514,7 +512,7 @@ const App = () => {
                    </a>
                 </div>
 
-              </motion.div>
+              </Motion.div>
             ))}
           </div>
         </div>
@@ -525,7 +523,7 @@ const App = () => {
         <div className="container mx-auto max-w-4xl text-center">
           
           {/* Contact Card */}
-          <motion.div
+          <Motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
@@ -558,7 +556,7 @@ const App = () => {
                   <FaWhatsapp size={18} /> WhatsApp
                </a>
             </div>
-          </motion.div>
+          </Motion.div>
 
           {/* --- FOOTER --- */}
           <footer className="border-t border-white/10 pt-8">
