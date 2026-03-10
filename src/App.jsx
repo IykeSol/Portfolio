@@ -695,7 +695,7 @@ export default function App() {
                 <a href={`https://wa.me/${WHATSAPP_NUMBER}`} target="_blank" rel="noopener noreferrer" className="p-2.5 rounded-full transition-colors flex items-center justify-center hover:bg-zinc-200 dark:hover:bg-zinc-800" style={{ color: themeVars['--muted'], background: themeVars['--surface2'] }}>
                   <FaWhatsapp size={18} />
                 </a>
-                <a href="https://twitter.com/Iyke_Sol" target="_blank" rel="noopener noreferrer" className="p-2.5 rounded-full transition-colors flex items-center justify-center hover:bg-zinc-200 dark:hover:bg-zinc-800" style={{ color: themeVars['--muted'], background: themeVars['--surface2'] }}>
+                <a href="https://twitter.com/agbaghaSol" target="_blank" rel="noopener noreferrer" className="p-2.5 rounded-full transition-colors flex items-center justify-center hover:bg-zinc-200 dark:hover:bg-zinc-800" style={{ color: themeVars['--muted'], background: themeVars['--surface2'] }}>
                   <Twitter size={18} />
                 </a>
               </div>
@@ -994,7 +994,7 @@ export default function App() {
               { href:'https://www.linkedin.com/in/kalu-ikechukwu-4730683a1', icon:<FaLinkedin size={20}/>, color: '#0077b5' },
               { href:'https://github.com/IykeSol', icon:<Github size={20}/>, color: themeVars['--text'] },
               { href:`https://wa.me/${WHATSAPP_NUMBER}`, icon:<FaWhatsapp size={20}/>, color: '#25D366' },
-              { href:'https://twitter.com/Iyke_Sol', icon:<Twitter size={20}/>, color: themeVars['--text'] }
+              { href:'https://twitter.com/agbaghaSol', icon:<Twitter size={20}/>, color: themeVars['--text'] }
             ].map((b, i) => (
               <a key={i} href={b.href} target="_blank" rel="noopener noreferrer"
                 className="p-3 rounded-full transition-transform hover:scale-110 flex items-center justify-center"
