@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&display=swap");
+/* Fonts loaded via <link> in index.html: Clash Display (display) · Satoshi (body) · Geist Mono (code) */
 
 @tailwind base;
 @tailwind components;
@@ -14,68 +14,73 @@
     scroll-behavior: smooth;
   }
   body {
-    font-family: "Geist", sans-serif;
-    background: #000000;
-    color: #fafafa;
+    font-family: "Satoshi", ui-sans-serif, system-ui, sans-serif;
+    background: #08080b;
+    color: #f4f4f5;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  .font-display {
+    font-family: "Clash Display", "Satoshi", ui-sans-serif, system-ui, sans-serif;
+    letter-spacing: -0.02em;
+  }
+  ::selection {
+    background: #4f7cff;
+    color: #ffffff;
+  }
+  :focus-visible {
+    outline: 2px solid #4f7cff;
+    outline-offset: 2px;
+  }
+  input:focus,
+  textarea:focus {
+    --tw-ring-color: rgba(79, 124, 255, 0.4);
+    border-color: #4f7cff !important;
   }
 
   /* Custom Scrollbar */
   ::-webkit-scrollbar {
-    width: 6px;
+    width: 8px;
+    height: 8px;
   }
   ::-webkit-scrollbar-track {
-    background: #000000;
+    background: transparent;
   }
   ::-webkit-scrollbar-thumb {
-    background: #18181b;
+    background: #2a2a33;
     border-radius: 10px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: #27272a;
+    background: #3a3a46;
   }
 }
 
 @layer utilities {
-  /* Animated dot-grid background */
-  .bg-dot-grid {
-    background-image: radial-gradient(circle, #27272a 1px, transparent 1px);
-    background-size: 24px 24px;
-  }
-
-  /* Infinite ticker scroll */
+  /* Infinite tech marquee */
   @keyframes ticker {
     0% { transform: translateX(0); }
     100% { transform: translateX(-50%); }
   }
   .animate-ticker {
     display: flex;
-    animation: ticker 30s linear infinite;
+    animation: ticker 32s linear infinite;
     width: max-content;
   }
   .animate-ticker:hover {
     animation-play-state: paused;
   }
 
-  /* Spin for loader */
-  @keyframes spin-slow {
-    to { transform: rotate(360deg); }
-  }
-  .animate-spin-slow {
-    animation: spin-slow 0.8s linear infinite;
-  }
-
-  /* Pulse dot */
+  /* Pulse dot (status indicator) */
   @keyframes pulse-dot {
     0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.5; transform: scale(1.1); }
+    50% { opacity: 0.5; transform: scale(1.15); }
   }
   .animate-pulse-dot {
     animation: pulse-dot 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
 
-  /* Blink cursor */
+  /* Blinking terminal cursor */
   @keyframes blink {
     0%, 100% { opacity: 1; }
     50% { opacity: 0; }
@@ -84,17 +89,99 @@
     animation: blink 1s step-end infinite;
   }
 
-  /* Shimmer */
-  @keyframes shimmer {
-    from { background-position: -200% center; }
-    to { background-position: 200% center; }
+  /* Reverse marquee — pairs with .animate-ticker for a crossing weave */
+  @keyframes ticker-rev {
+    0% { transform: translateX(-50%); }
+    100% { transform: translateX(0); }
   }
-  .text-shimmer {
-    background: linear-gradient(90deg, #2563eb 0%, #60a5fa 40%, #2563eb 80%);
-    background-size: 200%;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    animation: shimmer 3s linear infinite;
+  .animate-ticker-rev {
+    display: flex;
+    animation: ticker-rev 38s linear infinite;
+    width: max-content;
+  }
+  .animate-ticker-rev:hover { animation-play-state: paused; }
+
+  /* Crossing light beams that sweep diagonally across a section */
+  .sweep {
+    position: absolute;
+    top: -25%;
+    height: 150%;
+    width: 2px;
+    pointer-events: none;
+    background: linear-gradient(to bottom, transparent, rgba(93, 139, 255, 0.55), transparent);
+    filter: blur(1px);
+    will-change: left;
+  }
+  .sweep-1 { transform: rotate(14deg); animation: sweep 7.5s ease-in-out infinite; }
+  .sweep-2 { transform: rotate(-14deg); animation: sweep 10s ease-in-out infinite 3s; }
+  @keyframes sweep {
+    0%   { left: -10%; opacity: 0; }
+    12%  { opacity: 0.9; }
+    88%  { opacity: 0.9; }
+    100% { left: 110%; opacity: 0; }
+  }
+
+  /* Traveling border beam — a light that crosses around the edge of a card */
+  .beam-border { position: relative; }
+  .beam-border::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1.5px;
+    background: conic-gradient(
+      from var(--beam-angle),
+      transparent 0deg,
+      var(--brand, #4f7cff) 55deg,
+      #8fb3ff 78deg,
+      transparent 135deg,
+      transparent 360deg
+    );
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+            mask-composite: exclude;
+    animation: beam-rot 6s linear infinite;
+    pointer-events: none;
+  }
+  @keyframes beam-rot { to { --beam-angle: 360deg; } }
+
+  /* Slow living aurora */
+  @keyframes aurora-drift {
+    0%   { transform: translate(-50%, 0) scale(1); }
+    50%  { transform: translate(-45%, 5%) scale(1.1); }
+    100% { transform: translate(-50%, 0) scale(1); }
+  }
+  .animate-aurora { animation: aurora-drift 16s ease-in-out infinite; }
+}
+
+/* Registered so the conic-gradient angle can animate smoothly */
+@property --beam-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .animate-ticker,
+  .animate-ticker-rev,
+  .animate-aurora {
+    animation: none !important;
+  }
+  .sweep-1,
+  .sweep-2 {
+    display: none;
+  }
+  .beam-border::before {
+    animation: none !important;
+    background: none;
   }
 }

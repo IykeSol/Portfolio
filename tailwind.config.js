@@ -7,10 +7,15 @@ export default {
   darkMode: 'class',
   theme: {
     extend: {
+      fontFamily: {
+        display: ['"Clash Display"', '"Satoshi"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        sans: ['"Satoshi"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        mono: ['"Geist Mono"', 'ui-monospace', 'SFMono-Regular', 'monospace'],
+      },
       colors: {
-        primary: "#2563eb",
-        dark: "#0f172a",
-      }
+        primary: "#4f7cff",
+        dark: "#08080b",
+      },
     },
   },
   plugins: [],
