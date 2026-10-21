@@ -110,7 +110,8 @@ const PROJECTS = [
     domain: 'ml',
     desc: 'An AI prepaid electricity meter analyzer that reads usage history, forecasts token consumption and flags unusual spending, with Gemini-powered savings advice so households can budget power smarter.',
     tech: ['Python', 'FastAPI', 'Pandas', 'Gemini API'],
-    link: 'https://iykesol-voltic.hf.space/',
+    link: 'https://voltic--iykesol.replit.app/dashboard',
+    github: 'https://github.com/IykeSol/voltic',
     image: '/Images/voltic.png',
     featured: false,
   },
@@ -1069,11 +1070,22 @@ export default function App() {
                       {p.tech.map(t => <span key={t} className="text-[11px] font-mono px-2.5 py-1 rounded"
                         style={{ background: 'var(--surface2)', color: 'var(--subtle)', border: `1px solid var(--border)` }}>{t}</span>)}
                     </div>
-                    <a href={p.link} target="_blank" rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-5 py-2.5 text-white font-semibold rounded-xl transition-all text-sm hover:-translate-y-0.5"
-                      style={{ background: 'var(--brand)' }}>
-                      View live project <ExternalLink size={14} />
-                    </a>
+                    <div className="flex flex-wrap items-center gap-3">
+                      <a href={p.link} target="_blank" rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-5 py-2.5 text-white font-semibold rounded-xl transition-all text-sm hover:-translate-y-0.5"
+                        style={{ background: 'var(--brand)' }}>
+                        View live project <ExternalLink size={14} />
+                      </a>
+                      {p.github && (
+                        <a href={p.github} target="_blank" rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all border hover:-translate-y-0.5"
+                          style={{ color: 'var(--text)', borderColor: 'var(--border-hi)' }}
+                          onMouseEnter={e => { e.currentTarget.style.background = 'var(--surface2)'; }}
+                          onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}>
+                          <Github size={15} /> Source code
+                        </a>
+                      )}
+                    </div>
                   </div>
                 </div>
               </Tilt>
@@ -1109,23 +1121,36 @@ export default function App() {
                       {p.tech.slice(0, 4).map(t => <span key={t} className="text-[10px] font-mono px-2 py-1 rounded-md"
                         style={{ background: 'var(--surface2)', color: 'var(--subtle)', border: `1px solid var(--border)` }}>{t}</span>)}
                     </div>
-                    {p.link ? (
-                      <a href={p.link} target="_blank" rel="noopener noreferrer"
-                        className="inline-flex items-center justify-center gap-2 w-full py-2.5 rounded-xl text-xs font-bold transition-all border"
-                        style={{ color: 'var(--text)', borderColor: 'var(--border-hi)' }}
-                        onMouseEnter={e => { e.currentTarget.style.background = 'var(--brand)'; e.currentTarget.style.color = '#fff'; e.currentTarget.style.borderColor = 'var(--brand)'; }}
-                        onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = themeVars['--text']; e.currentTarget.style.borderColor = themeVars['--border-hi']; }}>
-                        View project <ArrowUpRight size={13} />
-                      </a>
-                    ) : (
-                      <button onClick={() => scrollTo('contact')}
-                        className="inline-flex items-center justify-center gap-2 w-full py-2.5 rounded-xl text-xs font-bold transition-all border"
-                        style={{ color: 'var(--text)', borderColor: 'var(--border-hi)' }}
-                        onMouseEnter={e => { e.currentTarget.style.background = 'var(--brand)'; e.currentTarget.style.color = '#fff'; e.currentTarget.style.borderColor = 'var(--brand)'; }}
-                        onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = themeVars['--text']; e.currentTarget.style.borderColor = themeVars['--border-hi']; }}>
-                        Request a demo <ArrowRight size={13} />
-                      </button>
-                    )}
+                    <div className="flex items-center gap-2">
+                      {p.link ? (
+                        <a href={p.link} target="_blank" rel="noopener noreferrer"
+                          className="inline-flex items-center justify-center gap-2 flex-1 py-2.5 rounded-xl text-xs font-bold transition-all border"
+                          style={{ color: 'var(--text)', borderColor: 'var(--border-hi)' }}
+                          onMouseEnter={e => { e.currentTarget.style.background = 'var(--brand)'; e.currentTarget.style.color = '#fff'; e.currentTarget.style.borderColor = 'var(--brand)'; }}
+                          onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = themeVars['--text']; e.currentTarget.style.borderColor = themeVars['--border-hi']; }}>
+                          View project <ArrowUpRight size={13} />
+                        </a>
+                      ) : (
+                        <button onClick={() => scrollTo('contact')}
+                          className="inline-flex items-center justify-center gap-2 flex-1 py-2.5 rounded-xl text-xs font-bold transition-all border"
+                          style={{ color: 'var(--text)', borderColor: 'var(--border-hi)' }}
+                          onMouseEnter={e => { e.currentTarget.style.background = 'var(--brand)'; e.currentTarget.style.color = '#fff'; e.currentTarget.style.borderColor = 'var(--brand)'; }}
+                          onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = themeVars['--text']; e.currentTarget.style.borderColor = themeVars['--border-hi']; }}>
+                          Request a demo <ArrowRight size={13} />
+                        </button>
+                      )}
+                      {p.github && (
+                        <a href={p.github} target="_blank" rel="noopener noreferrer"
+                          className="inline-flex items-center justify-center p-2.5 rounded-xl text-xs font-bold transition-all border hover:-translate-y-0.5"
+                          title="View source on GitHub"
+                          aria-label="View source on GitHub"
+                          style={{ color: 'var(--text)', borderColor: 'var(--border-hi)' }}
+                          onMouseEnter={e => { e.currentTarget.style.background = 'var(--surface2)'; e.currentTarget.style.borderColor = 'var(--brand)'; }}
+                          onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.borderColor = themeVars['--border-hi']; }}>
+                          <Github size={16} />
+                        </a>
+                      )}
+                    </div>
                   </div>
                 </Tilt>
               </Reveal>
